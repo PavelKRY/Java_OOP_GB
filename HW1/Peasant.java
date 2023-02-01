@@ -4,14 +4,14 @@ public class Peasant extends BaseHero{
 
     int supply;
 
-    public Peasant(String name, int attack, int[] damage, int deference, int health, int speed, int supply) {
-        super(name, attack, damage, deference, health, speed);
+    public Peasant(String name, String role, int attack, int[] damage,int defence, int health, int speed, int supply) {
+        super(name, role, attack, defence, damage, health, speed);
         this.supply = supply;
     }
 
 
     public Peasant(String name){
-        super(name, 1, new int[] {1,1}, 1, 1, 3);
+        super(name, "Крестьянин", 1, 1, new int[] {1,1}, 1, 3);
         this.supply = 1;
     }
     @Override
