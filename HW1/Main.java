@@ -4,6 +4,7 @@ import HW1.units.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import java.util.Scanner;
 
 public class Main {
@@ -25,11 +26,14 @@ public class Main {
         }
     }
 
+
     private static void init() {
+
         String[] namesList = {"Артём", "Александр", "Михаил", "Максим", "Иван", "Даниил", "Дмитрий", "Кирилл", "Никита", "Егор", "Матвей", "Андрей", "Илья", "Алексей", "Роман", "Сергей", "Владислав", "Ярослав", "Тимофей", "Арсений", "Денис", "Владимир", "Павел", "Глеб", "Константин", "Богдан", "Евгений", "Николай", "Степан", "Захар", "Тимур", "Марк", "Семён", "Фёдор", "Георгий", "Лев", "Антон", "Вадим", "Игорь", "Руслан", "Вячеслав", "Григорий", "Макар", "Артур", "Виктор", "Станислав", "Савелий", "Олег", "Давид", "Леонид", "Пётр", "Юрий", "Виталий", "Мирон", "Василий", "Всеволод", "Елисей", "Назар", "Родион", "Марат",
                 "Платон", "Герман", "Игнат", "Святослав", "Анатолий", "Тихон", "Валерий", "Мирослав", "Ростислав", "Борис", "Филипп", "Демьян", "Гордей", "Валентин", "Демид", "Прохор", "Серафим", "Савва", "Яромир",
                 "Аркадий", "Архип", "Тарас", "Трофим"};
         int namesSize = namesList.length;
+
         whiteSide = new ArrayList<>();
         darkSide = new ArrayList<>();
         ArrayList<BaseHero> whiteFarmers = new ArrayList<>();
@@ -57,8 +61,10 @@ public class Main {
                 case 1 : darkSide.add(new Monk(darkSide, namesList[random.nextInt(namesSize)], x, y++)); break;
                 case 2 : darkSide.add(new Spearman(darkSide, namesList[random.nextInt(namesSize)], x, y++)); break;
                 case 3 : darkFarmers.add(new Farmer(darkSide, namesList[random.nextInt(namesSize)], x, y++)); break;
+
             }
         }
         darkSide.addAll(darkFarmers);
     }
 }
+
