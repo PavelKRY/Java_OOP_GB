@@ -11,6 +11,10 @@ public class Vector2 {
         if (opposit.y == y && opposit.x == x) return true;
         return false;
     }
+
+    protected Vector2 getPosition(){
+        return new Vector2(x, y);
+    }
     public float getDistance(float x, float y) {
         float dx = x - this.x;
         float dy = y - this.y;

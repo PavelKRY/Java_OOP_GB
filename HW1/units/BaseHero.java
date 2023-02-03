@@ -2,7 +2,7 @@ package HW1.units;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
+
 
 public abstract class BaseHero implements BaseInterface {
     protected String name, role, icon;
@@ -63,5 +63,21 @@ public abstract class BaseHero implements BaseInterface {
     }
     public float heroHP(){
         return health;
+    }
+    protected Vector2 getTarget(ArrayList<BaseHero> heroList) {
+        float minDistance = 100;
+        int minIndex = 0;
+        for (int i = 0; i < heroList.size(); i++) {
+            float temp = getPosition().getDistance(heroList.get(0).getPosition().x, heroList.get(0).getPosition().y);
+            if (temp < minDistance && heroList.get(i).health > 0) {
+                minDistance = temp;
+                minIndex = i;
+            }
+        }
+        return new Vector2(minDistance, minIndex);
+    }
+
+    public void setPosition(float x, float y) {
+        this.position = new Vector2(x, y);
     }
 }

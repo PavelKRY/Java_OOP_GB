@@ -49,19 +49,7 @@ public class Ranged extends BaseHero {
             }
         }
     }
-    private Vector2 getTarget(ArrayList<BaseHero> heroList) {
-        float minDistance = 100;
-        int minIndex = 0;
-        for (int i = 0; i < heroList.size(); i++) {
-            float temp = getPosition().getDistance(heroList.get(0).getPosition().x, heroList.get(0).getPosition().y);
-            if (temp < minDistance && heroList.get(i).health > 0) {
-                minDistance = temp;
-                minIndex = i;
-            }
 
-        }
-        return new Vector2(minDistance, minIndex);
-    }
 
     @Override
     public String toString() {
