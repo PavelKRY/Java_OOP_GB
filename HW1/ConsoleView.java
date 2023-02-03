@@ -2,7 +2,7 @@ package HW1;
 
 
 import HW1.units.Vector2;
-
+import HW1.units.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class ConsoleView {
     private static int step = 1;
-    //----------------отрисовка строчек псевдографики таблицы ---------начало ----------------
+
     private static final String top10 = formateDiv("a") + String.join("",
             Collections.nCopies(Main.GANG_SIZE - 1, formateDiv("-b"))) + formateDiv("-c");
     private static final String mid10 = formateDiv("d") + String.join("",
@@ -18,7 +18,7 @@ public class ConsoleView {
     private static final String bott10 = formateDiv("g") + String.join("",
             Collections.nCopies(Main.GANG_SIZE - 1, formateDiv("-h"))) + formateDiv("-i");
 
-    //----------------отрисовка строчек псевдографики таблицы --------конец-----------------
+
     public static void view() {
 
         if (ConsoleView.step == 1) {
@@ -65,8 +65,8 @@ public class ConsoleView {
         for (int i = 0; i < Main.GANG_SIZE; i++) {
             if (Main.darkSide.get(i).getPosition().isEquals(position)) {
                 str = "|" + AnsiColors.ANSI_BLUE + Main.darkSide.get(i).getName().toUpperCase().charAt(0) + AnsiColors.ANSI_RESET + "|"
-                        + " ".repeat(3) + AnsiColors.ANSI_GREEN + Main.whiteSide.get(i).getInfo() + AnsiColors.ANSI_RESET
-                        + " ".repeat(5) + AnsiColors.ANSI_BLUE + Main.darkSide.get(i).getInfo() + AnsiColors.ANSI_RESET;
+                + " ".repeat(3) + getColor(Main.whiteSide.get(i), 1) + Main.whiteSide.get(i).getInfo() + AnsiColors.ANSI_RESET
+                + " ".repeat(5) + getColor(Main.darkSide.get(i), 2) + Main.darkSide.get(i).getInfo() + AnsiColors.ANSI_RESET;
             }
 
             if (Main.whiteSide.get(i).getPosition().isEquals(position)) {
@@ -75,7 +75,23 @@ public class ConsoleView {
         }
         return str;
     }
-
+    private static String getColor(BaseHero hero, int team) {
+        switch (team) {
+            case 1 : {
+                if (hero.heroHP() == 0) {
+                    return AnsiColors.ANSI_RED;
+                } else
+                    return AnsiColors.ANSI_GREEN;
+            } 
+            case 2 : {
+                if (hero.heroHP() == 0) {
+                    return AnsiColors.ANSI_RED;
+                } else
+                    return AnsiColors.ANSI_BLUE;
+            }
+        } 
+        return AnsiColors.ANSI_PURPUR;
+    }
 
 } 
 

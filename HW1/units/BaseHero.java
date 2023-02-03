@@ -6,7 +6,8 @@ import java.util.Random;
 
 public abstract class BaseHero implements BaseInterface {
     protected String name, role, icon;
-    protected int attack, defence, health, maxHealth, speed;
+    protected int attack, defence, maxHealth, speed;
+    protected float health;
     protected int[] damage;
     protected ArrayList<BaseHero> teamList;
     private Vector2 position;
@@ -21,7 +22,7 @@ public abstract class BaseHero implements BaseInterface {
         this.defence = defence;
         this.damage = damage;
         this.maxHealth = health;
-        this.health = maxHealth - new Random().nextInt(maxHealth);
+        this.health = maxHealth;
         this.speed = speed;
         this.position = new Vector2(x, y);
     }
@@ -36,7 +37,7 @@ public abstract class BaseHero implements BaseInterface {
     @Override
     public String getInfo() {
 
-        return String.format("%-10s %-13s%-3s %s: %-3d/ %-3d %s: %-5d |", name, role, icon, "\uD83E\uDDE1",health, maxHealth, "⚔", attack);
+        return String.format("%-10s %-13s%-3s %s: %-3d/ %-3d %s: %-5d |", name, role, icon, "\uD83E\uDDE1",(int) health, maxHealth, "⚔", attack);
     }
 
     @Override
@@ -50,5 +51,17 @@ public abstract class BaseHero implements BaseInterface {
 
     public String getName() {
         return role;
+    }
+
+    protected void getDamage(float attackPower){
+        this.health -= attackPower;
+        if (this.health < 0){
+            this.health = 0;
+        } else if (this.health > maxHealth){
+            this.health = maxHealth;
+        }
+    }
+    public float heroHP(){
+        return health;
     }
 }
