@@ -3,12 +3,13 @@ package HW1.units;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Healers extends BaseHero {
     int mana;
 
-    public Healers(ArrayList<BaseHero> teamList, String name, String role, String icon, int attack, int defence, int[] damage, int health, int speed, int mana, int x, int y) {
-        super(teamList, name, role, icon, attack, defence, damage, health, speed, x, y);
+    public Healers(ArrayList<BaseHero> teamList, String name, String role, String icon, int attack, int defence, int[] damage, int health, int speed, int mana, int x, int y, String team, boolean status) {
+        super(teamList, name, role, icon, attack, defence, damage, health, speed, x, y, team, status);
         this.mana = mana;
     }
 
@@ -20,34 +21,74 @@ public class Healers extends BaseHero {
 
     @Override
     public void step(ArrayList<BaseHero> heroList) {
+        if (health == 0) {
+            return;
+        }
+        if (status) {
+            status = false;
+            return;
+        }
 
-        if (health == 0) {return;}
         int max = 100;
         int maxi = 0;
-        for (int i = 0; i < teamList.size(); i++) {
-            if (teamList.get(i).health == 0) {continue;}
-            int currentHealth = teamList.get(i).getHealth();
-            if (currentHealth < 100) {
-                if (currentHealth < max) {
-                    max = currentHealth;
-                    maxi = i;
+        for (int i = 0; i < heroList.size(); i++) {
+            if (heroList.get(i).getTeam().equals(getTeam())) {
+                if (heroList.get(i).health == 0) {
+                    System.out.printf("\nПерсонаж %s %s воскресил персонажа %s %s В виде: ", name, role, heroList.get(i).name, heroList.get(i).role);
+                    resurrect(i, heroList);
+                    return;
                 }
+                int currentHealth = heroList.get(i).getHealth();
+                if (currentHealth < 100) {
+                    if (currentHealth < max) {
+                        max = currentHealth;
+                        maxi = i;
+                    }
+                }
+            } else {
+                continue;
             }
         }
-        if (max < 100){
-            healing(teamList.get(maxi));
+        if (max < 100) {
+            healing(heroList.get(maxi));
         }
     }
 
     private void healing(BaseHero weak) {
-        int currentHealth = (int)weak.health;
-        int healingPower = damage[0];
-        if (Math.abs(healingPower - currentHealth) > weak.maxHealth) {
-            weak.health = weak.maxHealth;
-            System.out.printf("\nПерсонаж %s %s вылечил персонажа %s %s полностью. Текущее здоровье: %d/%d", name, role, weak.name, weak.role, (int)weak.health, weak.maxHealth);
+        float healingPower = damage[0];
+        weak.getDamage(healingPower);
+        if (weak.health == weak.maxHealth) {
+            System.out.printf("\nПерсонаж %s %s вылечил персонажа %s %s полностью. Текущее здоровье: %d/%d", name, role, weak.name, weak.role, (int) weak.health, weak.maxHealth);
         } else {
-            weak.health = Math.abs(healingPower - currentHealth);
-            System.out.printf("\nПерсонаж %s %s вылечил персонажа %s %s на %d ед. здоровья. Текущее здоровье: %d/%d", name, role, weak.name, weak.role, Math.abs(healingPower), (int)weak.health, weak.maxHealth);
+            System.out.printf("\nПерсонаж %s %s вылечил персонажа %s %s на %d ед. здоровья. Текущее здоровье: %d/%d", name, role, weak.name, weak.role, (int) Math.abs(healingPower), (int) weak.health, weak.maxHealth);
         }
+    }
+
+    private void resurrect(int index, ArrayList<BaseHero> heroList) {
+        String[] namesList = {"Артём", "Александр", "Михаил", "Максим", "Иван", "Даниил", "Дмитрий", "Кирилл", "Никита", "Егор", "Матвей", "Андрей", "Илья", "Алексей", "Роман", "Сергей", "Владислав", "Ярослав", "Тимофей", "Арсений", "Денис", "Владимир", "Павел", "Глеб", "Константин", "Богдан", "Евгений", "Николай", "Степан", "Захар", "Тимур", "Марк", "Семён", "Фёдор", "Георгий", "Лев", "Антон", "Вадим", "Игорь", "Руслан", "Вячеслав", "Григорий", "Макар", "Артур", "Виктор", "Станислав", "Савелий", "Олег", "Давид", "Леонид", "Пётр", "Юрий", "Виталий", "Мирон", "Василий", "Всеволод", "Елисей", "Назар", "Родион", "Марат",
+                "Платон", "Герман", "Игнат", "Святослав", "Анатолий", "Тихон", "Валерий", "Мирослав", "Ростислав", "Борис", "Филипп", "Демьян", "Гордей", "Валентин", "Демид", "Прохор", "Серафим", "Савва", "Яромир",
+                "Аркадий", "Архип", "Тарас", "Трофим"};
+        int namesSize = namesList.length;
+        int posX = (int) heroList.get(index).getPosition().x;
+        int posY = (int) heroList.get(index).getPosition().y;
+        status = true;
+        String heroTeam = heroList.get(index).getTeam();
+        Random random = new Random();
+        if (heroTeam.equals("white")) {
+            switch (random.nextInt(4)) {
+                case 0 : heroList.set(index, new Farmer(teamList, namesList[random.nextInt(namesSize)], posX, posY, "white", false)); break;
+                case 1 : heroList.set(index, new Rogue(teamList, namesList[random.nextInt(namesSize)], posX, posY, "white", false)); break;
+                case 2 : heroList.set(index, new Sniper(teamList, namesList[random.nextInt(namesSize)], posX, posY, "white", false)); break;
+                case 3 : heroList.set(index, new Mage(teamList, namesList[random.nextInt(namesSize)], posX, posY, "white", false)); break;
+            }
+        } else {
+            switch (random.nextInt(4)) {
+                case 0 : heroList.set(index, new Crossbowman(teamList, namesList[random.nextInt(namesSize)], posX, posY, "dark", false)); break;
+                case 1 : heroList.set(index, new Monk(teamList, namesList[random.nextInt(namesSize)], posX, posY, "dark", false)); break;
+                case 2 : heroList.set(index, new Spearman(teamList, namesList[random.nextInt(namesSize)], posX, posY, "dark", false)); break;
+                case 3 : heroList.set(index, new Farmer(teamList, namesList[random.nextInt(namesSize)], posX, posY, "dark", false)); break;
+            }
+        }
+        System.out.printf("%s %s\n", heroList.get(index).name, heroList.get(index).role);
     }
 }
