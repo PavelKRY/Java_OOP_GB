@@ -3,6 +3,7 @@ package HW1;
 import HW1.units.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 import java.util.Scanner;
@@ -14,14 +15,19 @@ public class Main {
 
     public static void main(String[] args) {
         init();
+        ArrayList<BaseHero> units = new ArrayList<>();
+        units.addAll(whiteSide);
+        units.addAll(darkSide);
+        Comparator<BaseHero> comparator = Comparator.comparing(BaseHero::getSpeed);
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            units.sort(comparator);
             ConsoleView.view();
-            System.out.println("\nХодит WhiteSide");
-            whiteSide.forEach(n -> n.step(darkSide));
-            System.out.println("\n\nХодит DarkSide");
-            darkSide.forEach(n -> n.step(whiteSide));
+            System.out.println("Press ENTER");
+            scanner.nextLine();
+
+            units.forEach(n -> n.step(units));
             scanner.nextLine();
         }
     }
@@ -45,10 +51,10 @@ public class Main {
 
         for (int i = 0; i < GANG_SIZE; i++) {
             switch (random.nextInt(4)) {
-                case 0 : whiteFarmers.add(new Farmer(whiteSide, namesList[random.nextInt(namesSize)], x, y++)); break;
-                case 1 : whiteSide.add(new Rogue(whiteSide, namesList[random.nextInt(namesSize)], x, y++)); break;
-                case 2 : whiteSide.add(new Sniper(whiteSide, namesList[random.nextInt(namesSize)], x, y++)); break;
-                case 3 : whiteSide.add(new Mage(whiteSide, namesList[random.nextInt(namesSize)], x, y++)); break;
+                case 0 : whiteFarmers.add(new Farmer(whiteSide, namesList[random.nextInt(namesSize)], x, y++, "white", false)); break;
+                case 1 : whiteSide.add(new Rogue(whiteSide, namesList[random.nextInt(namesSize)], x, y++, "white", false)); break;
+                case 2 : whiteSide.add(new Sniper(whiteSide, namesList[random.nextInt(namesSize)], x, y++, "white", false)); break;
+                case 3 : whiteSide.add(new Mage(whiteSide, namesList[random.nextInt(namesSize)], x, y++, "white", false)); break;
             }
         }
         whiteSide.addAll(whiteFarmers);
@@ -57,10 +63,11 @@ public class Main {
         y = 1;
         for (int i = 0; i < GANG_SIZE; i++) {
             switch (random.nextInt(4)) {
-                case 0 : darkSide.add(new Crossbowman(darkSide, namesList[random.nextInt(namesSize)], x, y++)); break;
-                case 1 : darkSide.add(new Monk(darkSide, namesList[random.nextInt(namesSize)], x, y++)); break;
-                case 2 : darkSide.add(new Spearman(darkSide, namesList[random.nextInt(namesSize)], x, y++)); break;
-                case 3 : darkFarmers.add(new Farmer(darkSide, namesList[random.nextInt(namesSize)], x, y++)); break;
+Homework-finaly
+                case 0 : darkSide.add(new Crossbowman(darkSide, namesList[random.nextInt(namesSize)], x, y++, "dark", false)); break;
+                case 1 : darkSide.add(new Monk(darkSide, namesList[random.nextInt(namesSize)], x, y++, "dark", false)); break;
+                case 2 : darkSide.add(new Spearman(darkSide, namesList[random.nextInt(namesSize)], x, y++, "dark", false)); break;
+                case 3 : darkFarmers.add(new Farmer(darkSide, namesList[random.nextInt(namesSize)], x, y++, "dark", false)); break;
 
             }
         }
